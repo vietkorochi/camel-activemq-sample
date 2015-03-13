@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cxf="http://camel.apache.org/schema/cxf"
+	xsi:schemaLocation="
+         http://www.springframework.org/schema/beans 
+         http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+         http://camel.apache.org/schema/cxf 
+         http://camel.apache.org/schema/cxf/camel-cxf.xsd
+         http://www.springframework.org/schema/jms 
+         http://www.springframework.org/schema/jms/spring-jms-3.2.xsd">
+
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${com.iamvtn.activemq.url}" />
+		<property name="userName" value="karaf"/>
+		<property name="password" value="karaf"/>
+		
+		<property name="alwaysSessionAsync" value="true"/>
+		<property name="copyMessageOnSend" value="false"/>
+		<property name="dispatchAsync" value="false"/>
+		<property name="optimizeAcknowledge" value="true"/>
+		<property name="useAsyncSend" value="true"/>
+	</bean>
+
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+		init-method="start" destroy-method="stop">
+		<property name="maxConnections" value="${foplus.ruote.service.quote.activemq.maxconnection}" />
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		
+		<property name="idleTimeout" value="0"/>
+		
+	</bean>
+
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="pooledConnectionFactory" />
+		<property name="concurrentConsumers" value="${foplus.ruote.service.quote.activemq.concurrent}" />
+		
+		<!-- if we are using transacted then enable CACHE_CONSUMER (if not using XA) to run faster
+		see more details at: http://camel.apache.org/jms -->
+		<property name="transacted" value="true"/>
+		<property name="cacheLevelName" value="CACHE_CONSUMER" />
+		<property name="acknowledgementMode" value="1"/>
+	</bean>
+
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig" />
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="pooledConnectionFactory"/>
+		
+		<property name="explicitQosEnabled" value="true"/>
+		<property name="deliveryMode" value="1"/>
+	</bean>
+</beans>
