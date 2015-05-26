@@ -1,0 +1,8 @@
+com\iamvtn\jms\JMSTextMessageConverter.class
+com\iamvtn\jms\RequestGateway$ProducerConsumer.class
+com\iamvtn\jms\JMSUtils.class
+com\iamvtn\cxf\rest\ws\HelloService.class
+com\iamvtn\jms\RequestGateway.class
+com\iamvtn\cxf\log\SLF4JLoggerProxy.class
+com\iamvtn\processor\ResponseProcessor.class
+com\iamvtn\cxf\Properties.class

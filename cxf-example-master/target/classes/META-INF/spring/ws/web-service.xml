@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd 
+		http://cxf.apache.org/jaxrs
+		http://cxf.apache.org/schemas/jaxrs.xsd
+		http://cxf.apache.org/jaxws
+		http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- Restful Service -->
+	<jaxrs:server id="helloRESTService" address="/RESTHello">
+		<jaxrs:serviceBeans>
+			<ref bean="helloRESTBean"/>
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
+	<bean id="helloRESTBean" class="com.iamvtn.cxf.rest.ws.HelloService"/>
+	
+</beans>

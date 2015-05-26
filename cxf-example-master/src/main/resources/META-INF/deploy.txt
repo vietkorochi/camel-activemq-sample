@@ -1,0 +1,5 @@
+
+osgi:install -s mvn:com.iamvtn/cxf-example/0.0.1
+
+etc/org.ops4j.pax.logging.cfg
+add log4j.logger.com.iamvtn.cxf = DEBUG
